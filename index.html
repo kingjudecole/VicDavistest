@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VicDavis Auto Link | Premium Ghanaian Dealership</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #002147;
+            --premium-red: #E31837;
+            --glass: rgba(255, 255, 255, 0.6);
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #fcfcfc; overflow-x: hidden; }
+        
+        /* New Tab Transition Effect */
+        .page-transition {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--navy); z-index: 9999;
+            transform: translateY(100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .page-transition.active { transform: translateY(0); }
+
+        .hero-gradient {
+            background: linear-gradient(rgba(0,33,71,0.3), rgba(0,33,71,0.3)), url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&q=80&w=2070');
+            background-size: cover; background-position: center;
+        }
+
+        .glass-search {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .social-sidebar {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+    </style>
+</head>
+<body>
+
+<div id="transition-layer" class="page-transition"></div>
+
+<nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-8 py-4 flex justify-between items-center">
+    <img src="your-logo-path.png" alt="VicDavis" class="h-12"> <div class="hidden md:flex space-x-10 text-sm font-semibold tracking-wide uppercase text-slate-700">
+        <a href="#" class="nav-link hover:text-red-600 transition">Buy a Car</a>
+        <a href="sell.html" class="nav-link hover:text-red-600 transition">Sell Your Car</a>
+        <a href="#" class="nav-link hover:text-red-600 transition">Finance</a>
+        <a href="#" class="nav-link hover:text-red-600 transition">About Us</a>
+    </div>
+    <button class="bg-[#002147] text-white px-6 py-2 rounded-full font-bold hover:bg-red-600 transition">Inventory</button>
+</nav>
+
+<section class="relative h-screen flex items-center justify-center hero-gradient px-4">
+    <div class="absolute right-8 top-1/2 -translate-y-1/2 flex flex-col items-center space-y-6 z-10">
+        <div class="w-[1px] h-20 bg-white/50"></div>
+        <div class="social-sidebar text-white text-xs tracking-[0.3em] uppercase opacity-70">Follow Excellence</div>
+        <a href="#" class="text-white hover:text-red-500 transition">FB</a>
+        <a href="#" class="text-white hover:text-red-500 transition">IG</a>
+        <a href="#" class="text-white hover:text-red-500 transition">WA</a>
+    </div>
+
+    <div class="max-w-6xl w-full text-center space-y-8 mt-20">
+        <h1 class="text-6xl md:text-8xl font-bold text-white leading-tight">Define Your <span class="text-red-500">Drive.</span></h1>
+        <p class="text-white text-lg opacity-90 tracking-wide">Official Copart Partner | Trusted Since 2009 | 500+ Luxury Imports</p>
+        
+        <div class="glass-search max-w-4xl mx-auto rounded-2xl p-6 shadow-2xl flex flex-wrap md:flex-nowrap gap-4 items-center">
+            <select class="bg-transparent border-b border-gray-400 p-2 w-full text-slate-800 focus:outline-none">
+                <option>Select Make</option>
+            </select>
+            <select class="bg-transparent border-b border-gray-400 p-2 w-full text-slate-800 focus:outline-none">
+                <option>Min Price ($)</option>
+                <option>$8,000</option>
+            </select>
+            <select class="bg-transparent border-b border-gray-400 p-2 w-full text-slate-800 focus:outline-none">
+                <option>Max Price ($)</option>
+                <option>$200,000</option>
+            </select>
+            <button class="w-full md:w-auto bg-[#E31837] text-white px-10 py-4 rounded-xl font-bold hover:scale-105 transition-all">SEARCH</button>
+        </div>
+    </div>
+</section>
+
+<section class="py-24 px-8 max-w-7xl mx-auto">
+    <div class="flex justify-between items-end mb-12">
+        <div>
+            <h2 class="text-3xl font-bold text-slate-900">Featured Showroom</h2>
+            <div class="h-1 w-20 bg-red-600 mt-2"></div>
+        </div>
+        <a href="#" class="text-navy font-bold border-b-2 border-navy">View All Inventory</a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="car-grid">
+        <div class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-gray-100">
+            <div class="relative h-64 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <div class="absolute top-4 right-4 flex space-x-2">
+                    <button class="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-red-600 transition" onclick="toggleLike(this)">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    </button>
+                    <button class="p-3 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white hover:text-navy transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
+                    </button>
+                </div>
+                <div class="absolute bottom-4 left-4 bg-navy text-white text-[10px] px-3 py-1 rounded-full font-bold uppercase tracking-widest">Available</div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-xl font-bold text-slate-800">Porsche 911 Carrera</h3>
+                    <span class="text-xl font-bold text-red-600">$145,000</span>
+                </div>
+                <div class="flex space-x-4 text-sm text-slate-500 font-medium">
+                    <span>2024</span>
+                    <span>•</span>
+                    <span>12,000 KM</span>
+                    <span>•</span>
+                    <span>Automatic</span>
+                </div>
+                <button class="w-full border-2 border-navy text-navy py-3 rounded-xl font-bold group-hover:bg-navy group-hover:text-white transition duration-300">View Details</button>
+            </div>
+        </div>
+        </div>
+</section>
+
+<section class="bg-navy py-20 px-8 text-white relative overflow-hidden">
+    <div class="absolute right-0 top-0 opacity-10">
+        <svg width="400" height="400" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="white" fill="none" stroke-width="0.5" /></svg>
+    </div>
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between relative z-10">
+        <div class="space-y-4 text-center md:text-left">
+            <h2 class="text-4xl font-bold">Want to Sell Your Car?</h2>
+            <p class="text-blue-200 text-lg">Instant valuation and best market rates for your premium vehicle.</p>
+        </div>
+        <a href="sell.html" class="mt-8 md:mt-0 bg-red-600 px-12 py-5 rounded-full font-black hover:bg-white hover:text-navy transition-all duration-500 text-lg">GET AN OFFER NOW</a>
+    </div>
+</section>
+
+  <section class="py-24 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-navy">Client Excellence</h2>
+            <p class="text-gray-500 mt-2">Verified Google Reviews</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div class="flex items-center space-x-1 mb-4">
+                    <span class="text-yellow-400 text-lg">★★★★★</span>
+                </div>
+                <p class="text-gray-600 italic">"The process of importing my Ford Raptor through VicDavis was seamless. Their partnership with Copart makes them the most reliable in Ghana."</p>
+                <div class="mt-6 font-bold text-navy">— Kwame Mensah</div>
+            </div>
+            </div>
+    </div>
+</section>
+
+<div class="fixed bottom-8 right-8 flex flex-col space-y-4 z-[100]">
+    <a href="https://wa.me/yournumber" class="w-14 h-14 bg-white shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition border border-gray-200">
+        <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.891-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.89-11.891 11.89-1.956 0-3.874-.482-5.588-1.397l-6.425 1.616zm6.373-4.431l.354.21c1.42.84 3.067 1.285 4.768 1.285 5.178 0 9.391-4.213 9.391-9.391 0-2.512-.979-4.873-2.753-6.647s-4.135-2.753-6.638-2.753c-5.178 0-9.391 4.213-9.391 9.391 0 1.815.522 3.591 1.508 5.148l.23.363-.996 3.633 3.727-.979z"/></svg>
+    </a>
+    <a href="tel:+123456" class="w-14 h-14 bg-navy shadow-xl rounded-full flex items-center justify-center hover:scale-110 transition">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+    </a>
+</div>
+
+<script>
+    // Tab-like Page Transition
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+            const target = e.target.href;
+            const transition = document.getElementById('transition-layer');
+            transition.classList.add('active');
+            setTimeout(() => {
+                window.location.href = target;
+            }, 600);
+        });
+    });
+
+    // Like Button Interaction
+    function toggleLike(btn) {
+        const svg = btn.querySelector('svg');
+        if (svg.getAttribute('fill') === 'none') {
+            svg.setAttribute('fill', 'currentColor');
+            btn.classList.add('text-red-600');
+        } else {
+            svg.setAttribute('fill', 'none');
+            btn.classList.remove('text-red-600');
+        }
+    }
+</script>
+</body>
+</html>
