@@ -9,6 +9,32 @@
 <meta property="og:description" content="Your Ultimate Auto For Your Luxury and Comfort. Official Copart & IAAI Partner.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#001F3F">
+
+<!-- =====================================================
+     FAVICON — VicDavis Auto Link Badge
+     Asset: assets/images/20260521_021448_0000-removebg-preview.png
+     Transparent PNG — renders correctly in both light and
+     dark browser tabs without any background modification.
+     ===================================================== -->
+
+<!-- Standard browser favicon (PNG — preferred over .ico in all modern browsers) -->
+<link rel="icon" type="image/png" href="assets/images/20260521_021448_0000-removebg-preview.png">
+
+<!-- Explicit sized hints — browsers pick the most appropriate resolution -->
+<link rel="icon" type="image/png" sizes="32x32"  href="assets/images/20260521_021448_0000-removebg-preview.png">
+<link rel="icon" type="image/png" sizes="16x16"  href="assets/images/20260521_021448_0000-removebg-preview.png">
+<link rel="icon" type="image/png" sizes="96x96"  href="assets/images/20260521_021448_0000-removebg-preview.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/images/20260521_021448_0000-removebg-preview.png">
+
+<!-- Apple Touch Icon (iOS home screen / bookmarks — 180×180 recommended) -->
+<link rel="apple-touch-icon" sizes="180x180" href="assets/images/20260521_021448_0000-removebg-preview.png">
+
+<!-- Legacy IE / Windows shortcut icon fallback -->
+<link rel="shortcut icon" href="assets/images/20260521_021448_0000-removebg-preview.png">
+
+<!-- Android Chrome / PWA manifest tile colour -->
+<meta name="msapplication-TileColor" content="#001F3F">
+<meta name="msapplication-TileImage" content="assets/images/20260521_021448_0000-removebg-preview.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
@@ -293,17 +319,21 @@ ul { list-style: none; }
 }
 .hero-video {
   position: absolute;
-  inset: 0;
+  top: 0; left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.45;
+  opacity: 0.55;
+  /* VIDEO FIX: z-index 0 (NOT negative) so video renders ABOVE #hero's background colour.
+     A negative z-index child is painted behind the parent's background — that was the bug. */
   z-index: 0;
+  will-change: transform; /* GPU acceleration for smooth playback */
 }
 .h-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  /* Dark overlay sits above video, below content */
+  background: linear-gradient(135deg, rgba(0,10,30,0.72) 0%, rgba(0,5,15,0.58) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -315,7 +345,7 @@ ul { list-style: none; }
     linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
   background-size: 72px 72px;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 /* Vertical social rail — AlbaCars style */
 .h-social-rail {
@@ -354,7 +384,7 @@ ul { list-style: none; }
 
 .hc {
   position: relative;
-  z-index: 2;
+  z-index: 3; /* Above video(0) + overlay(1) + lines(2) */
   padding: 130px 32px 72px;
   max-width: 1360px;
   margin: 0 auto;
@@ -712,6 +742,11 @@ ul { list-style: none; }
   text-align: center;
   position: relative;
   overflow: hidden;
+  /* FIX 2: flex column ensures icon sits directly above number */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 .metric-card:first-child { border-radius: var(--r3) 0 0 var(--r3); }
 .metric-card:last-child { border-radius: 0 var(--r3) var(--r3) 0; }
@@ -743,18 +778,28 @@ ul { list-style: none; }
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+/* FIX 2: Metallic gold gradient applied to icon container */
 .metric-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.08);
+  width: 52px;
+  height: 52px;
+  /* Premium metallic gold gradient */
+  background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 30%, #b38728 60%, #fbf5b7 80%, #aa771c 100%);
+  border: none;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Stacked directly above the number */
   margin: 0 auto 20px;
+  box-shadow: 0 4px 16px rgba(191,149,63,.35), inset 0 1px 0 rgba(255,255,255,.45);
 }
-.metric-icon svg { width: 22px; height: 22px; fill: rgba(255,255,255,.4); }
+.metric-icon svg {
+  width: 22px;
+  height: 22px;
+  /* White fill for maximum contrast against gold background */
+  fill: rgba(255,255,255,.92);
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.25));
+}
 
 /* ============================
    IMPORT DARK SECTION
@@ -814,7 +859,13 @@ ul { list-style: none; }
 .icard-icon svg { width: 22px; height: 22px; fill: var(--red); }
 .icard h4 { font-family: var(--fh); font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 5px; letter-spacing: .3px; }
 .icard p { font-size: 11px; color: rgba(255,255,255,.42); line-height: 1.5; }
-.ptners { display: flex; gap: 12px; margin-top: 28px; align-items: center; flex-wrap: wrap; }
+.ptners {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 32px;
+  align-items: flex-start;
+}
 .pt {
   font-family: var(--fh);
   font-size: 14px; font-weight: 700;
@@ -825,6 +876,59 @@ ul { list-style: none; }
 }
 .pt-copart { background: #0066CC; }
 .pt-iaai { background: #C41E3A; }
+
+/* Partner authority statement */
+.ptners-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.partner-authority {
+  font-family: var(--fb);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  line-height: 1.4;
+}
+
+/* Partner logo badges — natural colors, no filter distortion */
+.pbadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  line-height: 0;
+}
+.pbadge img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-height: 36px;
+  max-width: 130px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+/* Copart: black bg logo blends into dark section */
+.pbadge-copart {
+  background: rgba(0,0,0,.55);
+  border: 1px solid rgba(255,255,255,.14);
+  overflow: hidden;
+}
+/* IAA: red bg logo — white pill so brand colors read correctly */
+.pbadge-iaai {
+  background: #fff;
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 8px 14px;
+}
 
 /* ============================
    SERVICES
@@ -1196,14 +1300,21 @@ input[type=range]::-webkit-slider-thumb {
 .fi.op .fic { background: var(--navy); color: #fff; transform: rotate(45deg); }
 .fi.op .fq { color: var(--navy); }
 .fa {
-  display: none;
-  padding: 0 0 20px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  padding: 0;
   font-size: 14px;
   color: var(--text-mid);
   line-height: 1.78;
   font-weight: 300;
+  transition: max-height 0.45s cubic-bezier(.4,0,.2,1), opacity 0.35s ease, padding 0.35s ease;
 }
-.fi.op .fa { display: block; }
+.fi.op .fa {
+  max-height: 400px;
+  opacity: 1;
+  padding: 0 0 22px;
+}
 
 /* ============================
    CONTACT
@@ -1461,30 +1572,52 @@ footer { background: #020d1c; color: #fff; }
 .brand-crawler { overflow: hidden; white-space: nowrap; }
 .brand-track {
   display: inline-flex;
+  align-items: center;
   gap: 0;
-  animation: crawl 38s linear infinite;
+  animation: crawl 55s linear infinite;
 }
-.brand-track span {
-  display: inline-block;
+.brand-crawler-wrap:hover .brand-track { animation-play-state: paused; }
+.brand-logo-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0 28px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #7A8CA0;
+  height: 48px;
   position: relative;
-  white-space: nowrap;
+  flex-shrink: 0;
+  opacity: .55;
+  transition: opacity .25s;
+  filter: grayscale(1);
 }
-.brand-track span::after {
-  content: '·';
+.brand-logo-item:hover { opacity: 1; filter: none; }
+.brand-logo-item::after {
+  content: '';
   position: absolute;
   right: 0;
-  color: #D8DFE9;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: #D8DFE9;
+  border-radius: 50%;
+}
+.brand-logo-item svg { height: 28px; width: auto; display: block; }
+.brand-logo-item .bname {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #3D4F65;
+  white-space: nowrap;
 }
 @keyframes crawl {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+/* Responsive: slow down on mobile */
+@media(max-width: 600px) {
+  .brand-track { animation-duration: 38s; }
 }
 
 /* ============================
@@ -1528,7 +1661,7 @@ footer { background: #020d1c; color: #fff; }
 .ig-follow-btn:hover { opacity: .85; }
 .ig-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 columns = 2 rows × 3 = 6 images */
   gap: 3px;
   max-width: 1240px;
   margin: 0 auto;
@@ -1563,7 +1696,10 @@ footer { background: #020d1c; color: #fff; }
 .ig-stat { color: #fff; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
 .ig-stat svg { width: 16px; height: 16px; fill: #fff; }
 
-
+/* ============================
+   SCROLL ANIMATION
+   ============================ */
+.fu {
   opacity: 0;
   transform: translateY(26px);
   transition: opacity .6s ease, transform .6s ease;
@@ -1657,6 +1793,9 @@ footer { background: #020d1c; color: #fff; }
   .contact-actions { flex-direction: column; }
   .gr-header { flex-direction: column; align-items: flex-start; }
   .gr-score-block { flex-direction: column; align-items: flex-start; }
+  .ig-grid { grid-template-columns: repeat(2,1fr); padding:0 12px; gap:2px; }
+  #vd-flyer { right:12px; bottom:90px; }
+  #vd-flyer .flyer-card { width:190px; }
 }
 
 /* ============================
@@ -1798,6 +1937,246 @@ footer { background: #020d1c; color: #fff; }
 </head>
 <body>
 
+<!-- ======================================================
+     PREMIUM PRELOADER
+     Sequence: Tagline → Logo → Partnership logos → Fade out
+     ====================================================== -->
+<style>
+/* ── Preloader ── */
+#vd-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000c1e;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transition: opacity .7s ease, visibility .7s ease;
+  overflow: hidden;
+}
+#vd-preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* Ambient background glow — brand navy, not red */
+#vd-preloader::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,51,102,.35) 0%, rgba(0,30,63,.15) 50%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  animation: plGlow 3s ease-in-out infinite alternate;
+}
+@keyframes plGlow {
+  0% { transform: translate(-50%,-50%) scale(.85); opacity: .6; }
+  100% { transform: translate(-50%,-50%) scale(1.15); opacity: 1; }
+}
+
+/* Tagline */
+.pl-tagline {
+  font-family: 'Oswald', Georgia, serif;
+  font-size: clamp(14px, 2.2vw, 20px);
+  font-weight: 300;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.0);
+  text-align: center;
+  max-width: 600px;
+  padding: 0 24px;
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .9s ease, transform .9s ease, color .9s ease;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 42px;
+}
+.pl-tagline.show { opacity: 1; transform: translateY(0); color: rgba(255,255,255,.72); }
+
+/* Logo — NO filter, NO tint. Display natural VicDavis colors. */
+.pl-logo {
+  opacity: 0;
+  transform: scale(.88);
+  transition: opacity .8s ease, transform .8s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 52px;
+}
+.pl-logo.show { opacity: 1; transform: scale(1); }
+.pl-logo img {
+  height: 120px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  /* LOGO FIX: NO filter/mix-blend-mode. The VicDavis logo has its own colors.
+     A navy drop-shadow only — no color distortion. */
+  filter: drop-shadow(0 6px 28px rgba(0,31,63,.55));
+}
+
+/* Divider — brand gold accent */
+.pl-divider {
+  width: 0px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,158,11,.6), rgba(0,80,160,.5), transparent);
+  margin: 0 0 40px;
+  transition: width .8s ease;
+  position: relative;
+  z-index: 1;
+}
+.pl-divider.show { width: 260px; }
+
+/* Partnership */
+.pl-partnership {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .7s ease, transform .7s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+.pl-partnership.show { opacity: 1; transform: translateY(0); }
+.pl-partnership-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.38);
+}
+.pl-partner-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+/* PARTNER LOGO FIX: White pill container so natural logo colors show clearly.
+   NO brightness(0) invert(1) — that made them white blobs. */
+.pl-partner-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px 28px;
+  min-width: 160px;
+  min-height: 72px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.3);
+}
+.pl-partner-pill img {
+  height: 44px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+  /* No filter — show real logo colors on white background */
+}
+
+/* Progress bar — brand navy-to-gold */
+.pl-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #001F3F, #003580, #F59E0B, #003580, #001F3F);
+  background-size: 300% 100%;
+  width: 0%;
+  transition: width linear;
+  animation: plBarShimmer 2s linear infinite;
+}
+@keyframes plBarShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: 0% 0; }
+}
+</style>
+
+<div id="vd-preloader">
+  <div class="pl-progress" id="pl-progress"></div>
+  <p class="pl-tagline" id="pl-tagline">Your Ultimate Auto<br>For Your Luxury and Comfort</p>
+  <div class="pl-logo" id="pl-logo">
+    <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link">
+  </div>
+  <div class="pl-divider" id="pl-divider"></div>
+  <div class="pl-partnership" id="pl-partnership">
+    <span class="pl-partnership-label">In Partnership With</span>
+    <div class="pl-partner-logos">
+      <div class="pl-partner-pill">
+        <!-- Copart: natural colors on white pill — no filter -->
+        <img src="assets/images/Copart_logo.svg.png" alt="Copart Official Partner">
+      </div>
+      <div class="pl-partner-pill">
+        <!-- IAA: natural colors on white pill — no filter -->
+        <img src="assets/images/iaa-insurance-auto-auctions-logo-png_seeklogo-368159.png" alt="IAA Official Partner">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Premium Preloader Sequence ──
+   Step 1 (80ms)   : tagline fades in
+   Step 2 (900ms)  : logo bounces in
+   Step 3 (1700ms) : divider grows, partnership fades in
+   Step 4 (3600ms) : preloader begins fade-out (700ms transition)
+   Step 5 (4300ms) : typeWriter() fires — hero is now visible, animation makes sense
+*/
+(function() {
+  var pl       = document.getElementById('vd-preloader');
+  var progress = document.getElementById('pl-progress');
+  var tagline  = document.getElementById('pl-tagline');
+  var logo     = document.getElementById('pl-logo');
+  var divider  = document.getElementById('pl-divider');
+  var partners = document.getElementById('pl-partnership');
+
+  /* Animate progress bar over total duration */
+  var totalDur = 3600;
+  progress.style.transition = 'width ' + totalDur + 'ms linear';
+  requestAnimationFrame(function() { requestAnimationFrame(function() { progress.style.width = '100%'; }); });
+
+  /* Step 1: Tagline */
+  setTimeout(function() { tagline.classList.add('show'); }, 80);
+
+  /* Step 2: Logo */
+  setTimeout(function() { logo.classList.add('show'); }, 900);
+
+  /* Step 3: Divider + Partnership */
+  setTimeout(function() {
+    divider.classList.add('show');
+    partners.classList.add('show');
+  }, 1700);
+
+  /* Step 4: Begin fade-out */
+  setTimeout(function() {
+    pl.classList.add('hidden');
+    /* Step 5: After fade-out transition (700ms) finishes:
+       — Remove preloader from DOM
+       — NOW start typewriter so user sees it animate fresh */
+    setTimeout(function() {
+      if (pl && pl.parentNode) { pl.parentNode.removeChild(pl); }
+      if (typeof typeWriter === 'function') { typeWriter(); }
+    }, 750); /* matches the 0.7s opacity transition + 50ms buffer */
+  }, totalDur);
+
+  /* Safety net: if page takes too long, don't block content.
+     Also fires typeWriter as fallback so it always runs. */
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      if (pl && !pl.classList.contains('hidden')) {
+        pl.classList.add('hidden');
+        setTimeout(function() {
+          if (pl && pl.parentNode) { pl.parentNode.removeChild(pl); }
+          if (typeof typeWriter === 'function') { typeWriter(); }
+        }, 750);
+      }
+    }, 5000);
+  });
+})();
+</script>
+
 <!-- PAGE TRANSITION OVERLAY -->
 <div class="pg-transition" id="pgt"></div>
 
@@ -1806,7 +2185,7 @@ footer { background: #020d1c; color: #fff; }
   <div class="ni">
     <a href="#" class="n-logo">
       <div class="logo-svg-wrap">
-        <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:54px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));" />
+        <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:54px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));" decoding="async" />
       </div>
     </a>
 
@@ -1853,7 +2232,26 @@ footer { background: #020d1c; color: #fff; }
 
 <!-- ======== HERO ======== -->
 <section id="hero">
-  <video class="hero-video" autoplay muted loop playsinline>
+  <!--
+    VIDEO FIX NOTES:
+    1. z-index is now 0 (positive) — it was -2 which hid it behind #hero background
+    2. poster shows logo while video loads (covers flash of white)
+    3. Three filename variants cover spaces/underscores in the repo filename
+    4. preload="auto" starts buffering immediately
+    5. playsinline required for iOS Safari
+  -->
+  <video
+    class="hero-video"
+    id="hero-vid"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto"
+    poster="assets/images/IMG_20260513_010215_065-removebg-preview.png"
+  >
+    <source src="assets/videos/hero video.mp4" type="video/mp4">
+    <source src="assets/videos/hero_video.mp4" type="video/mp4">
     <source src="assets/videos/herovideo.mp4" type="video/mp4">
   </video>
   <div class="h-overlay"></div>
@@ -1977,47 +2375,432 @@ footer { background: #020d1c; color: #fff; }
 </div>
 
 <!-- ======== BRAND CRAWLER ======== -->
-<div class="brand-crawler-wrap" style="background:#f8f9fb;border-bottom:1px solid #e8ecf2;padding:18px 0;overflow:hidden">
+<div class="brand-crawler-wrap" style="background:#f8f9fb;border-bottom:1px solid #e8ecf2;padding:14px 0;overflow:hidden">
   <div class="brand-crawler">
-    <div class="brand-track">
-      <!-- 33 brands × 2 for seamless loop -->
-      <span>Toyota</span><span>Mercedes-Benz</span><span>BMW</span><span>Ford</span><span>Chevrolet</span>
-      <span>Lexus</span><span>Nissan</span><span>Audi</span><span>Range Rover</span><span>Porsche</span>
-      <span>Cadillac</span><span>Dodge</span><span>Jeep</span><span>GMC</span><span>Buick</span>
-      <span>Hyundai</span><span>Kia</span><span>Honda</span><span>Infiniti</span><span>Acura</span>
-      <span>Volvo</span><span>Jaguar</span><span>Land Rover</span><span>Subaru</span><span>Mitsubishi</span>
-      <span>Mazda</span><span>Chrysler</span><span>Lincoln</span><span>Bentley</span><span>Rolls-Royce</span>
-      <span>Lamborghini</span><span>Ferrari</span><span>Maserati</span>
-      <!-- duplicate for infinite loop -->
-      <span>Toyota</span><span>Mercedes-Benz</span><span>BMW</span><span>Ford</span><span>Chevrolet</span>
-      <span>Lexus</span><span>Nissan</span><span>Audi</span><span>Range Rover</span><span>Porsche</span>
-      <span>Cadillac</span><span>Dodge</span><span>Jeep</span><span>GMC</span><span>Buick</span>
-      <span>Hyundai</span><span>Kia</span><span>Honda</span><span>Infiniti</span><span>Acura</span>
-      <span>Volvo</span><span>Jaguar</span><span>Land Rover</span><span>Subaru</span><span>Mitsubishi</span>
-      <span>Mazda</span><span>Chrysler</span><span>Lincoln</span><span>Bentley</span><span>Rolls-Royce</span>
-      <span>Lamborghini</span><span>Ferrari</span><span>Maserati</span>
+    <div class="brand-track" id="brand-track">
+
+      <!-- ── TOYOTA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="50" cy="20" rx="48" ry="18" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <ellipse cx="50" cy="20" rx="28" ry="10" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <ellipse cx="50" cy="20" rx="9" ry="18" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <!-- ── MERCEDES-BENZ ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="20" y1="2" x2="20" y2="20" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="20" y1="20" x2="3.4" y2="29" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="20" y1="20" x2="36.6" y2="29" stroke="#1a1a1a" stroke-width="2.5"/>
+        </svg>
+      </div>
+
+      <!-- ── BMW ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="20" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <circle cx="20" cy="20" r="12" fill="none" stroke="#1a1a1a" stroke-width="1.5"/>
+          <path d="M8 20 A12 12 0 0 1 20 8 L20 20 Z" fill="#1a1a1a" opacity=".7"/>
+          <path d="M32 20 A12 12 0 0 1 20 32 L20 20 Z" fill="#1a1a1a" opacity=".7"/>
+          <text x="20" y="24" font-family="Oswald,sans-serif" font-size="6" font-weight="700" fill="#1a1a1a" text-anchor="middle">BMW</text>
+        </svg>
+      </div>
+
+      <!-- ── AUDI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <circle cx="38" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <circle cx="60" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <circle cx="82" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+        </svg>
+      </div>
+
+      <!-- ── FORD ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 80 36" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="40" cy="18" rx="38" ry="16" fill="#1a1a1a"/>
+          <text x="40" y="24" font-family="Georgia,serif" font-size="16" font-weight="700" font-style="italic" fill="#fff" text-anchor="middle">Ford</text>
+        </svg>
+      </div>
+
+      <!-- ── CHEVROLET ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 14 H28 L28 22 H52 L52 14 H80 L80 26 H52 L52 18 H28 L28 26 H0 Z" fill="#1a1a1a"/>
+        </svg>
+      </div>
+
+      <!-- ── LEXUS ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="30" cy="20" rx="28" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <text x="30" y="26" font-family="Oswald,sans-serif" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="2">L</text>
+        </svg>
+      </div>
+
+      <!-- ── NISSAN ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="16" width="100" height="8" rx="1" fill="#1a1a1a"/>
+          <circle cx="50" cy="20" r="16" fill="#f8f9fb" stroke="#1a1a1a" stroke-width="2.5"/>
+          <text x="50" y="25" font-family="Oswald,sans-serif" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="1">NISSAN</text>
+        </svg>
+      </div>
+
+      <!-- ── RANGE ROVER ── -->
+      <div class="brand-logo-item">
+        <span class="bname" style="letter-spacing:3px">RANGE<br style="display:none">ROVER</span>
+      </div>
+
+      <!-- ── PORSCHE ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="4" width="78" height="32" rx="2" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="40" y1="4" x2="40" y2="36" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="1" y1="20" x2="79" y2="20" stroke="#1a1a1a" stroke-width="2"/>
+          <rect x="18" y="8" width="4" height="24" fill="#1a1a1a"/>
+          <rect x="30" y="8" width="4" height="24" fill="#1a1a1a"/>
+          <text x="58" y="26" font-family="Oswald,sans-serif" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">PORSCHE</text>
+        </svg>
+      </div>
+
+      <!-- ── CADILLAC ── -->
+      <div class="brand-logo-item">
+        <span class="bname">CADILLAC</span>
+      </div>
+
+      <!-- ── DODGE ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,2 58,20 30,38 2,20" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+          <text x="30" y="26" font-family="Oswald,sans-serif" font-size="10" font-weight="700" fill="#1a1a1a" text-anchor="middle">DODGE</text>
+        </svg>
+      </div>
+
+      <!-- ── JEEP ── -->
+      <div class="brand-logo-item">
+        <span class="bname" style="font-size:16px">JEEP</span>
+      </div>
+
+      <!-- ── GMC ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="58" height="28" rx="3" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <text x="30" y="22" font-family="Oswald,sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">GMC</text>
+        </svg>
+      </div>
+
+      <!-- ── HYUNDAI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="25" cy="20" rx="23" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <text x="25" y="27" font-family="Oswald,sans-serif" font-size="18" font-weight="700" font-style="italic" fill="#1a1a1a" text-anchor="middle">H</text>
+        </svg>
+      </div>
+
+      <!-- ── KIA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <text x="30" y="24" font-family="Oswald,sans-serif" font-size="22" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="4">KIA</text>
+        </svg>
+      </div>
+
+      <!-- ── HONDA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 44 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="40" height="36" rx="4" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <text x="22" y="28" font-family="Oswald,sans-serif" font-size="22" font-weight="700" fill="#1a1a1a" text-anchor="middle">H</text>
+        </svg>
+      </div>
+
+      <!-- ── INFINITI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 8 L6 32 M30 8 L54 32" stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="30" cy="8" r="7" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+        </svg>
+      </div>
+
+      <!-- ── ACURA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4 L20 26" stroke="#1a1a1a" stroke-width="6" stroke-linecap="square"/>
+          <path d="M6 30 Q20 12 34 30" fill="none" stroke="#1a1a1a" stroke-width="4"/>
+        </svg>
+      </div>
+
+      <!-- ── VOLVO ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="22" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="36" y1="8" x2="48" y2="4" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="38" y1="4" x2="48" y2="4" stroke="#1a1a1a" stroke-width="2.5"/>
+          <line x1="48" y1="4" x2="48" y2="12" stroke="#1a1a1a" stroke-width="2.5"/>
+        </svg>
+      </div>
+
+      <!-- ── JAGUAR ── -->
+      <div class="brand-logo-item">
+        <span class="bname" style="font-style:italic;letter-spacing:3px">JAGUAR</span>
+      </div>
+
+      <!-- ── LAND ROVER ── -->
+      <div class="brand-logo-item">
+        <span class="bname" style="letter-spacing:2px">LAND ROVER</span>
+      </div>
+
+      <!-- ── SUBARU ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="30" cy="20" rx="28" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <circle cx="26" cy="16" r="3" fill="#1a1a1a"/>
+          <circle cx="34" cy="16" r="3" fill="#1a1a1a"/>
+          <circle cx="30" cy="24" r="2.5" fill="#1a1a1a"/>
+          <circle cx="22" cy="22" r="2" fill="#1a1a1a"/>
+          <circle cx="38" cy="22" r="2" fill="#1a1a1a"/>
+          <circle cx="26" cy="30" r="1.5" fill="#1a1a1a"/>
+        </svg>
+      </div>
+
+      <!-- ── MITSUBISHI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="25,2 38,24 25,24" fill="#1a1a1a"/>
+          <polygon points="12,24 25,24 25,46" fill="#1a1a1a"/>
+          <polygon points="38,24 25,46 25,24" fill="#1a1a1a" opacity=".45"/>
+        </svg>
+      </div>
+
+      <!-- ── MAZDA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="25" cy="20" rx="23" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <path d="M12 28 Q25 4 38 28 Q25 16 12 28 Z" fill="#1a1a1a"/>
+        </svg>
+      </div>
+
+      <!-- ── LINCOLN ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="36" height="36" rx="2" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="2" y1="20" x2="38" y2="20" stroke="#1a1a1a" stroke-width="2"/>
+          <line x1="20" y1="2" x2="20" y2="38" stroke="#1a1a1a" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <!-- ── BENTLEY ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 4 C10 4 2 12 2 20 C2 28 10 36 30 36 C50 36 58 28 58 20 C58 12 50 4 30 4 Z" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <text x="30" y="26" font-family="Oswald,sans-serif" font-size="16" font-weight="700" font-style="italic" fill="#1a1a1a" text-anchor="middle">B</text>
+          <path d="M15 16 L45 16 M15 20 L45 20 M15 24 L45 24" stroke="#1a1a1a" stroke-width="1" opacity=".3"/>
+        </svg>
+      </div>
+
+      <!-- ── ROLLS-ROYCE ── -->
+      <div class="brand-logo-item">
+        <span class="bname" style="letter-spacing:2px">ROLLS·ROYCE</span>
+      </div>
+
+      <!-- ── LAMBORGHINI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="30,4 56,36 4,36" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+          <polygon points="30,10 50,34 10,34" fill="#1a1a1a" opacity=".15"/>
+        </svg>
+      </div>
+
+      <!-- ── FERRARI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="26" height="46" rx="2" fill="#1a1a1a"/>
+          <path d="M10 8 L10 26 L6 38 M20 8 L20 26 L24 38 M15 8 L15 32" stroke="#f8f9fb" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- ── MASERATI ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 2 L15 32" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M15 22 Q8 18 4 10" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M15 22 Q22 18 26 10" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M15 32 L11 44 L15 40 L19 44 Z" fill="#1a1a1a"/>
+        </svg>
+      </div>
+
+      <!-- ── BUICK ── -->
+      <div class="brand-logo-item">
+        <span class="bname">BUICK</span>
+      </div>
+
+      <!-- ── TESLA ── -->
+      <div class="brand-logo-item">
+        <svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4 L20 46" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/>
+          <path d="M2 4 L38 4 Q20 12 20 4" fill="#1a1a1a"/>
+        </svg>
+      </div>
+
+      <!-- ── CHRYSLER ── -->
+      <div class="brand-logo-item">
+        <span class="bname">CHRYSLER</span>
+      </div>
+
+      <!-- DUPLICATE SET for seamless loop -->
+      <div class="brand-logo-item"><svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="20" rx="48" ry="18" fill="none" stroke="#1a1a1a" stroke-width="3"/><ellipse cx="50" cy="20" rx="28" ry="10" fill="none" stroke="#1a1a1a" stroke-width="3"/><ellipse cx="50" cy="20" rx="9" ry="18" fill="none" stroke="#1a1a1a" stroke-width="3"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><line x1="20" y1="2" x2="20" y2="20" stroke="#1a1a1a" stroke-width="2.5"/><line x1="20" y1="20" x2="3.4" y2="29" stroke="#1a1a1a" stroke-width="2.5"/><line x1="20" y1="20" x2="36.6" y2="29" stroke="#1a1a1a" stroke-width="2.5"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="20" cy="20" r="12" fill="none" stroke="#1a1a1a" stroke-width="1.5"/><path d="M8 20 A12 12 0 0 1 20 8 L20 20 Z" fill="#1a1a1a" opacity=".7"/><path d="M32 20 A12 12 0 0 1 20 32 L20 20 Z" fill="#1a1a1a" opacity=".7"/><text x="20" y="24" font-family="Oswald,sans-serif" font-size="6" font-weight="700" fill="#1a1a1a" text-anchor="middle">BMW</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 100 32" xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/><circle cx="38" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/><circle cx="60" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/><circle cx="82" cy="16" r="14" fill="none" stroke="#1a1a1a" stroke-width="3"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 80 36" xmlns="http://www.w3.org/2000/svg"><ellipse cx="40" cy="18" rx="38" ry="16" fill="#1a1a1a"/><text x="40" y="24" font-family="Georgia,serif" font-size="16" font-weight="700" font-style="italic" fill="#fff" text-anchor="middle">Ford</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><path d="M0 14 H28 L28 22 H52 L52 14 H80 L80 26 H52 L52 18 H28 L28 26 H0 Z" fill="#1a1a1a"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="20" rx="28" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><text x="30" y="26" font-family="Oswald,sans-serif" font-size="16" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="2">L</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 100 40" xmlns="http://www.w3.org/2000/svg"><rect x="0" y="16" width="100" height="8" rx="1" fill="#1a1a1a"/><circle cx="50" cy="20" r="16" fill="#f8f9fb" stroke="#1a1a1a" stroke-width="2.5"/><text x="50" y="25" font-family="Oswald,sans-serif" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="1">NISSAN</text></svg></div>
+      <div class="brand-logo-item"><span class="bname" style="letter-spacing:3px">RANGE ROVER</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="4" width="78" height="32" rx="2" fill="none" stroke="#1a1a1a" stroke-width="2"/><line x1="40" y1="4" x2="40" y2="36" stroke="#1a1a1a" stroke-width="2"/><line x1="1" y1="20" x2="79" y2="20" stroke="#1a1a1a" stroke-width="2"/><text x="58" y="26" font-family="Oswald,sans-serif" font-size="9" font-weight="700" fill="#1a1a1a" text-anchor="middle">PORSCHE</text></svg></div>
+      <div class="brand-logo-item"><span class="bname">CADILLAC</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><polygon points="30,2 58,20 30,38 2,20" fill="none" stroke="#1a1a1a" stroke-width="3"/><text x="30" y="26" font-family="Oswald,sans-serif" font-size="10" font-weight="700" fill="#1a1a1a" text-anchor="middle">DODGE</text></svg></div>
+      <div class="brand-logo-item"><span class="bname" style="font-size:16px">JEEP</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="58" height="28" rx="3" fill="none" stroke="#1a1a1a" stroke-width="2"/><text x="30" y="22" font-family="Oswald,sans-serif" font-size="18" font-weight="700" fill="#1a1a1a" text-anchor="middle">GMC</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="25" cy="20" rx="23" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><text x="25" y="27" font-family="Oswald,sans-serif" font-size="18" font-weight="700" font-style="italic" fill="#1a1a1a" text-anchor="middle">H</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><text x="30" y="24" font-family="Oswald,sans-serif" font-size="22" font-weight="700" fill="#1a1a1a" text-anchor="middle" letter-spacing="4">KIA</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 44 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="40" height="36" rx="4" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><text x="22" y="28" font-family="Oswald,sans-serif" font-size="22" font-weight="700" fill="#1a1a1a" text-anchor="middle">H</text></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><path d="M30 8 L6 32 M30 8 L54 32" stroke="#1a1a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="30" cy="8" r="7" fill="none" stroke="#1a1a1a" stroke-width="2.5"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><path d="M20 4 L20 26" stroke="#1a1a1a" stroke-width="6" stroke-linecap="square"/><path d="M6 30 Q20 12 34 30" fill="none" stroke="#1a1a1a" stroke-width="4"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg"><circle cx="22" cy="22" r="18" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><line x1="36" y1="8" x2="48" y2="4" stroke="#1a1a1a" stroke-width="2.5"/><line x1="38" y1="4" x2="48" y2="4" stroke="#1a1a1a" stroke-width="2.5"/><line x1="48" y1="4" x2="48" y2="12" stroke="#1a1a1a" stroke-width="2.5"/></svg></div>
+      <div class="brand-logo-item"><span class="bname" style="font-style:italic;letter-spacing:3px">JAGUAR</span></div>
+      <div class="brand-logo-item"><span class="bname" style="letter-spacing:2px">LAND ROVER</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="30" cy="20" rx="28" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="26" cy="16" r="3" fill="#1a1a1a"/><circle cx="34" cy="16" r="3" fill="#1a1a1a"/><circle cx="30" cy="24" r="2.5" fill="#1a1a1a"/><circle cx="22" cy="22" r="2" fill="#1a1a1a"/><circle cx="38" cy="22" r="2" fill="#1a1a1a"/><circle cx="26" cy="30" r="1.5" fill="#1a1a1a"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><polygon points="25,2 38,24 25,24" fill="#1a1a1a"/><polygon points="12,24 25,24 25,46" fill="#1a1a1a"/><polygon points="38,24 25,46 25,24" fill="#1a1a1a" opacity=".45"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 50 40" xmlns="http://www.w3.org/2000/svg"><ellipse cx="25" cy="20" rx="23" ry="17" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><path d="M12 28 Q25 4 38 28 Q25 16 12 28 Z" fill="#1a1a1a"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="36" height="36" rx="2" fill="none" stroke="#1a1a1a" stroke-width="2"/><line x1="2" y1="20" x2="38" y2="20" stroke="#1a1a1a" stroke-width="2"/><line x1="20" y1="2" x2="20" y2="38" stroke="#1a1a1a" stroke-width="2"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><path d="M30 4 C10 4 2 12 2 20 C2 28 10 36 30 36 C50 36 58 28 58 20 C58 12 50 4 30 4 Z" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><text x="30" y="26" font-family="Oswald,sans-serif" font-size="16" font-weight="700" font-style="italic" fill="#1a1a1a" text-anchor="middle">B</text></svg></div>
+      <div class="brand-logo-item"><span class="bname" style="letter-spacing:2px">ROLLS·ROYCE</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg"><polygon points="30,4 56,36 4,36" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><polygon points="30,10 50,34 10,34" fill="#1a1a1a" opacity=".15"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="26" height="46" rx="2" fill="#1a1a1a"/><path d="M10 8 L10 26 L6 38 M20 8 L20 26 L24 38 M15 8 L15 32" stroke="#f8f9fb" stroke-width="1.5" fill="none"/></svg></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 30 50" xmlns="http://www.w3.org/2000/svg"><path d="M15 2 L15 32" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/><path d="M15 22 Q8 18 4 10" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M15 22 Q22 18 26 10" stroke="#1a1a1a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M15 32 L11 44 L15 40 L19 44 Z" fill="#1a1a1a"/></svg></div>
+      <div class="brand-logo-item"><span class="bname">BUICK</span></div>
+      <div class="brand-logo-item"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg"><path d="M20 4 L20 46" stroke="#1a1a1a" stroke-width="4" stroke-linecap="round"/><path d="M2 4 L38 4 Q20 12 20 4" fill="#1a1a1a"/></svg></div>
+      <div class="brand-logo-item"><span class="bname">CHRYSLER</span></div>
+
     </div>
   </div>
 </div>
 
-<!-- ======== FLYER — Creative animated entrance ======== -->
-<div id="vd-flyer" style="display:none;position:fixed;bottom:32px;right:96px;z-index:1200;pointer-events:all;animation:flyerDrop .7s cubic-bezier(.17,.67,.5,1.2) both">
-  <div style="position:relative;width:220px">
-    <button onclick="document.getElementById('vd-flyer').style.display='none'" style="position:absolute;top:-10px;right:-10px;width:22px;height:22px;background:#D32F2F;color:#fff;border:none;border-radius:50%;font-size:13px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;line-height:1">×</button>
-    <div style="background:linear-gradient(135deg,#001F3F 0%,#003366 60%,#D32F2F 100%);border-radius:12px;padding:18px 16px;box-shadow:0 12px 40px rgba(0,0,0,.4);border:1.5px solid rgba(255,255,255,.12)">
-      <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis" style="width:100px;display:block;margin:0 auto 10px;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))">
-      <p style="color:#fff;font-family:'Oswald',sans-serif;font-size:13px;text-align:center;text-transform:uppercase;letter-spacing:1px;margin:0 0 6px">Spend Less. Drive More.</p>
-      <p style="color:rgba(255,255,255,.65);font-size:10px;text-align:center;margin:0 0 12px;line-height:1.5">USA imports direct to Ghana. Official Copart &amp; IAAI Partner.</p>
-      <a href="https://wa.me/233577551078" target="_blank" style="display:block;background:#25D366;color:#fff;border-radius:6px;font-size:11px;font-weight:600;text-align:center;padding:8px;text-decoration:none">WhatsApp Us Now</a>
+<!-- ======== FLYER — Premium animated floating card ======== -->
+<style>
+@keyframes flyerIn {
+  0%   { opacity:0; transform:translateY(80px) scale(.85) rotate(-3deg); }
+  60%  { opacity:1; transform:translateY(-6px) scale(1.02) rotate(.5deg); }
+  100% { opacity:1; transform:translateY(0) scale(1) rotate(0); }
+}
+@keyframes flyerPulse {
+  0%,100% { box-shadow:0 14px 50px rgba(0,0,0,.45), 0 0 0 0 rgba(211,47,47,.45); }
+  50%      { box-shadow:0 14px 50px rgba(0,0,0,.45), 0 0 0 12px rgba(211,47,47,0); }
+}
+#vd-flyer { display:none; position:fixed; bottom:32px; right:100px; z-index:1200; pointer-events:all; }
+#vd-flyer.show { display:block; animation:flyerIn .75s cubic-bezier(.17,.67,.5,1.2) both; }
+#vd-flyer .flyer-card {
+  position:relative; width:210px;
+  background:linear-gradient(145deg,#001226 0%,#002040 50%,#001a33 100%);
+  border-radius:14px; padding:20px 16px 16px;
+  box-shadow:0 14px 50px rgba(0,0,0,.45);
+  border:1px solid rgba(255,255,255,.1);
+  animation:flyerPulse 3s ease 2s infinite;
+  overflow:hidden;
+}
+#vd-flyer .flyer-card::before {
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--red),#FF6B35,var(--red));
+  background-size:200% 100%;
+  animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+#vd-flyer .flyer-close {
+  position:absolute;top:8px;right:8px;width:20px;height:20px;
+  background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:50%;
+  font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  line-height:1;transition:background .2s;
+}
+#vd-flyer .flyer-close:hover { background:var(--red); }
+</style>
+
+<div id="vd-flyer">
+  <div class="flyer-card">
+    <button class="flyer-close" onclick="document.getElementById('vd-flyer').classList.remove('show');setTimeout(()=>document.getElementById('vd-flyer').style.display='none',300)">×</button>
+    <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis" style="width:90px;display:block;margin:0 auto 10px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))" loading="lazy" decoding="async">
+    <p style="color:#fff;font-family:'Oswald',sans-serif;font-size:13px;text-align:center;text-transform:uppercase;letter-spacing:1.2px;margin:0 0 4px;line-height:1.2">Spend Less.<br>Drive More.</p>
+    <p style="color:rgba(255,255,255,.55);font-size:10px;text-align:center;margin:0 0 14px;line-height:1.55">USA imports direct to Ghana.<br>Official Copart &amp; IAAI Partner.</p>
+    <div style="display:flex;gap:7px">
+      <a href="https://wa.me/233577551078" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:#25D366;color:#fff;border-radius:6px;font-size:10.5px;font-weight:600;text-align:center;padding:9px 6px;text-decoration:none">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.413A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        WhatsApp
+      </a>
+      <a href="#inv" onclick="document.getElementById('vd-flyer').classList.remove('show')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:5px;background:var(--red);color:#fff;border-radius:6px;font-size:10.5px;font-weight:600;text-align:center;padding:9px 6px;text-decoration:none">Browse Cars</a>
     </div>
   </div>
 </div>
-<style>
-@keyframes flyerDrop {
-  0% { opacity:0; transform:translateY(60px) scale(.85); }
-  100% { opacity:1; transform:translateY(0) scale(1); }
-}
-</style>
+
+<script>
+/* ── Bulletproof Video Autoplay Fix ──
+   Handles: iOS Safari, Chrome autoplay policy, network delays, all edge cases */
+(function() {
+  function forcePlay(vid) {
+    if (!vid) return;
+    vid.muted = true;
+    vid.volume = 0;
+    vid.setAttribute('muted', '');
+    vid.setAttribute('playsinline', '');
+
+    function tryPlay() {
+      var p = vid.play();
+      if (p && typeof p.then === 'function') {
+        p.then(function() {
+          /* Playing — opacity already set via CSS */
+        }).catch(function() {
+          /* Autoplay blocked — try again on first user interaction */
+          var unlock = function() {
+            vid.play().catch(function(){});
+            document.removeEventListener('touchstart', unlock);
+            document.removeEventListener('click', unlock);
+            document.removeEventListener('keydown', unlock);
+          };
+          document.addEventListener('touchstart', unlock, { once: true });
+          document.addEventListener('click', unlock, { once: true });
+          document.addEventListener('keydown', unlock, { once: true });
+        });
+      }
+    }
+
+    /* Try immediately */
+    tryPlay();
+
+    /* Also retry on canplay event in case buffering is slow */
+    vid.addEventListener('canplay', function() { tryPlay(); }, { once: true });
+
+    /* iOS: reload can help if video stalls before playing */
+    if (vid.readyState === 0) { vid.load(); }
+  }
+
+  /* Run as soon as DOM is available */
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      forcePlay(document.getElementById('hero-vid'));
+    });
+  } else {
+    forcePlay(document.getElementById('hero-vid'));
+  }
+
+  /* ── Flyer reveal after 14s (polite, not intrusive) ── */
+  setTimeout(function() {
+    var fl = document.getElementById('vd-flyer');
+    if (fl) { fl.style.display = 'block'; setTimeout(function(){ fl.classList.add('show'); }, 50); }
+  }, 14000);
+})();
+</script>
 
 
 
@@ -2029,11 +2812,64 @@ footer { background: #020d1c; color: #fff; }
         <span class="lbl">Apex Gallery</span>
         <h2 class="stitle">Browse <em>Available Cars</em></h2>
       </div>
-      <a href="https://wa.me/233577551078?text=Hello%20VicDavis!%20I%20would%20like%20to%20request%20a%20specific%20car%20that%20I%20cannot%20find%20in%20your%20inventory." target="_blank" class="btn btn-on">
+      <a href="https://wa.me/233577551078?text=Hello%20VicDavis!%20I%20would%20like%20to%20request%20a%20specific%20car%20that%20I%20cannot%20find%20in%20your%20inventory." target="_blank" class="btn btn-on" id="req-car-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Request a Specific Car
       </a>
     </div>
+
+    <!-- Request a Car — inline upload panel -->
+    <div id="req-panel" style="display:none;background:#fff;border:1.5px solid var(--steel-3);border-radius:var(--r3);padding:28px 26px;margin-bottom:28px;box-shadow:var(--sh2)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h4 style="font-family:var(--fh);font-size:17px;font-weight:600;color:var(--text-dark);letter-spacing:.3px">Request a Specific Car</h4>
+        <button onclick="document.getElementById('req-panel').style.display='none'" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:20px;line-height:1;padding:0 4px">×</button>
+      </div>
+      <div class="lfr">
+        <div class="lfg"><label>Car Make & Model</label><input type="text" id="rq-car" placeholder="e.g. Toyota RAV4 2022"></div>
+        <div class="lfg"><label>Your Name</label><input type="text" id="rq-nm" placeholder="Full name"></div>
+      </div>
+      <div class="lfg"><label>Phone / WhatsApp</label><input type="tel" id="rq-ph" placeholder="+233 XXX XXX XXX"></div>
+      <div class="lfg">
+        <label>Attach Reference Photo (optional)</label>
+        <div id="rq-drop" style="border:2px dashed var(--steel-3);border-radius:var(--r2);padding:20px;text-align:center;cursor:pointer;transition:border-color .25s;position:relative">
+          <input type="file" id="rq-file" accept="image/*,.pdf" style="position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--text-light)" stroke-width="1.5" style="display:block;margin:0 auto 8px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p id="rq-fname" style="font-size:12px;color:var(--text-light);margin:0">Click to upload or drag an image here</p>
+        </div>
+      </div>
+      <button class="btn btn-r btn-full" style="margin-top:6px" onclick="submitCarRequest()">Send Request via WhatsApp</button>
+    </div>
+
+    <style>
+      #rq-drop:hover { border-color: var(--navy); }
+      #rq-drop.has-file { border-color: var(--green); background: rgba(5,150,105,.04); }
+    </style>
+    <script>
+      document.getElementById('req-car-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        const panel = document.getElementById('req-panel');
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+        if (panel.style.display === 'block') panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+      });
+      document.getElementById('rq-file').addEventListener('change', function() {
+        const f = this.files[0];
+        if (f) {
+          document.getElementById('rq-fname').textContent = '✓ ' + f.name;
+          document.getElementById('rq-drop').classList.add('has-file');
+        }
+      });
+      function submitCarRequest() {
+        const car = document.getElementById('rq-car').value.trim();
+        const nm = document.getElementById('rq-nm').value.trim();
+        const ph = document.getElementById('rq-ph').value.trim();
+        if (!car || !nm || !ph) { showToast('Please fill in car, name and phone', 'error'); return; }
+        const file = document.getElementById('rq-file').files[0];
+        const fileNote = file ? `\nReference photo: ${file.name} (please send separately)` : '';
+        const msg = `Hello VicDavis Auto Link! I'm requesting a specific car.\n\nCar: ${car}\nName: ${nm}\nPhone: ${ph}${fileNote}\n\nPlease help me source this vehicle.`;
+        window.open(`https://wa.me/233577551078?text=${encodeURIComponent(msg)}`, '_blank');
+        showToast('Redirecting to WhatsApp…');
+      }
+    </script>
 
     <!-- Filter bar -->
     <div class="frow fu">
@@ -2132,9 +2968,19 @@ footer { background: #020d1c; color: #fff; }
           </div>
         </div>
         <div class="ptners">
-          <span class="pt pt-copart">COPART</span>
-          <span class="pt pt-iaai">IAAI</span>
-          <span style="font-size:12px;color:rgba(255,255,255,.35);font-weight:500">Official Licensed Partners</span>
+          <div class="ptners-row">
+            <div class="pbadge pbadge-copart">
+              <img src="assets/images/Copart_logo.svg.png" alt="Copart — Official Auction Partner">
+            </div>
+            <div class="pbadge pbadge-iaai">
+              <img src="assets/images/iaa-insurance-auto-auctions-logo-png_seeklogo-368159.png" alt="IAA — Official Auction Partner">
+            </div>
+          </div>
+          <p class="partner-authority">
+            <span style="display:inline-block;width:22px;height:1px;background:rgba(255,255,255,.25);flex-shrink:0"></span>
+            Official Partners in West Africa
+            <span style="display:inline-block;width:22px;height:1px;background:rgba(255,255,255,.25);flex-shrink:0"></span>
+          </p>
         </div>
       </div>
       <div class="fu fd2">
@@ -2171,25 +3017,19 @@ footer { background: #020d1c; color: #fff; }
         <!-- Visual explainer banner -->
         <div class="visual-trio fd2">
           <div class="visual-trio-item">
-            <img src="assets/images/usabidding.jpg" alt="USA Auction Live Bidding" loading="lazy">
-            <div class="visual-trio-caption">🏛️ USA Auction Live Bidding</div>
+            <img src="assets/images/usabidding.jpg" alt="USA Auction Live Bidding" loading="lazy" decoding="async">
+            <div class="visual-trio-caption">USA Auction Live Bidding</div>
           </div>
           <div class="visual-trio-item">
-            <img src="assets/images/loogistics.jpg" alt="Shipping & Logistics" loading="lazy">
-            <div class="visual-trio-caption">🚢 Shipping &amp; Logistics</div>
+            <img src="assets/images/loogistics.jpg" alt="Shipping & Logistics" loading="lazy" decoding="async">
+            <div class="visual-trio-caption">Shipping &amp; Logistics</div>
           </div>
           <div class="visual-trio-item">
-            <img src="assets/images/shippedtoyourdoor.jpg" alt="Delivered to Your Door" loading="lazy">
-            <div class="visual-trio-caption">🚗 Delivered to Your Door</div>
+            <img src="assets/images/shippedtoyourdoor.jpg" alt="Delivered to Your Door" loading="lazy" decoding="async">
+            <div class="visual-trio-caption">Delivered to Your Door</div>
           </div>
         </div>
-        <div style="margin-top:22px">
-          <a href="https://wa.me/233577551078?text=Hello%20VicDavis%20Auto%20Link!%20I%27m%20interested%20in%20importing%20a%20car%20from%20USA%20via%20Copart%2FIAAI.%20Can%20you%20help%20me%3F" target="_blank" class="btn btn-r btn-full" style="margin-bottom:10px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.413A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
-            Start Import via WhatsApp
-          </a>
-          <button class="btn btn-ow btn-full" onclick="openBook('Import Consultation')">Book Import Consultation</button>
-        </div>
+
       </div>
     </div>
   </div>
@@ -2247,6 +3087,82 @@ footer { background: #020d1c; color: #fff; }
         <p>Dealer in quality car tyres and spare parts. Genuine and aftermarket options available for all major vehicle makes and models.</p>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ======== INSTAGRAM-STYLE GALLERY ======== -->
+<section class="ig-section">
+  <!-- Verified IG Header -->
+  <div class="ig-header">
+    <div class="ig-avatar">
+      <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis" loading="lazy" decoding="async">
+    </div>
+    <div class="ig-meta">
+      <div class="ig-username">
+        vicdavisautolink_copart
+        <svg class="ig-verified" viewBox="0 0 24 24">
+          <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+        </svg>
+      </div>
+      <div class="ig-sub">VicDavis Auto Link · 500+ Cars Imported · Official Copart &amp; IAAI Partner</div>
+    </div>
+    <a href="https://www.instagram.com/vicdavisautolink_copart/" target="_blank" class="ig-follow-btn">Follow</a>
+  </div>
+
+  <!-- 3×2 Grid — 6 unique images, fastest load -->
+  <div class="ig-grid">
+    <!-- Row 1 -->
+    <div class="ig-item fu">
+      <img src="assets/images/gallery1.jpg" alt="VicDavis Fleet" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>1.2K</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>48</div>
+      </div>
+    </div>
+    <div class="ig-item fu fd1">
+      <img src="assets/images/gallery2.jpg" alt="Car Delivery" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>874</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>31</div>
+      </div>
+    </div>
+    <div class="ig-item fu fd2">
+      <img src="assets/images/usabidding.jpg" alt="USA Auction Live Bidding" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>3.2K</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>118</div>
+      </div>
+    </div>
+    <!-- Row 2 -->
+    <div class="ig-item fu fd1">
+      <img src="assets/images/loogistics.jpg" alt="Shipping & Logistics" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>2.7K</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>84</div>
+      </div>
+    </div>
+    <div class="ig-item fu fd2">
+      <img src="assets/images/shippedtoyourdoor.jpg" alt="Delivered to Your Door" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>1.4K</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>53</div>
+      </div>
+    </div>
+    <div class="ig-item fu fd3">
+      <img src="assets/images/gallery4.jpg" alt="VicDavis Cars" loading="lazy" decoding="async">
+      <div class="ig-item-overlay">
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>956</div>
+        <div class="ig-stat"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>27</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IG Footer CTA -->
+  <div style="text-align:center;padding:32px 28px 0;max-width:1240px;margin:0 auto">
+    <a href="https://www.instagram.com/vicdavisautolink_copart/" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);color:#fff;padding:12px 32px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;transition:opacity .2s">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"/></svg>
+      Follow @vicdavisautolink_copart
+    </a>
   </div>
 </section>
 
@@ -2371,11 +3287,17 @@ footer { background: #020d1c; color: #fff; }
       </div>
       <div class="fu fd2">
         <div class="vid-frame">
-          <div class="vid-ph">
-            <button class="vid-btn" onclick="alert('Upload your company video to YouTube and replace this with your embed link.')">
-              <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            </button>
-            <p>Watch Our Story — VicDavis Auto Link</p>
+          <!-- YouTube embed: https://youtu.be/31-00yeB96U -->
+          <div style="position:relative;width:100%;padding-bottom:56.25%;border-radius:var(--r3);overflow:hidden;box-shadow:var(--sh5)">
+            <iframe
+              src="https://www.youtube.com/embed/31-00yeB96U?rel=0&modestbranding=1&color=white"
+              title="VicDavis Auto Link — Our Story"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              loading="lazy"
+              style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"
+            ></iframe>
           </div>
         </div>
         <div class="copart-badge">
@@ -2567,7 +3489,7 @@ footer { background: #020d1c; color: #fff; }
     <div class="container">
       <div class="fg4">
         <div class="fbrand">
-          <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:70px;width:auto;object-fit:contain;margin-bottom:12px;" />
+          <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:70px;width:auto;object-fit:contain;margin-bottom:12px;" loading="lazy" decoding="async" />
           <div class="fbrand-name" style="display:none">VicDavis <em>Auto Link</em></div>
           <p>Your Ultimate Auto For Your Luxury and Comfort. Ghana's most trusted car dealership and USA importer since 2009. Official Copart &amp; IAAI Partner. Opposite Dansoman Police Station, Accra.</p>
           <div class="fsoc">
@@ -2584,9 +3506,14 @@ footer { background: #020d1c; color: #fff; }
               <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
             </a>
           </div>
-          <div class="fpartners" style="margin-top:16px">
-            <span class="fpt" style="background:#0066CC">COPART</span>
-            <span class="fpt" style="background:#C41E3A">IAAI</span>
+          <div class="fpartners" style="margin-top:16px;align-items:center;gap:12px">
+            <!-- FIX 5: Using correct asset filenames with proper sizing attributes -->
+            <a href="https://www.copart.com" target="_blank" style="display:flex;align-items:center;background:#fff;border-radius:6px;padding:4px 10px;border:1px solid rgba(255,255,255,.1);transition:opacity .2s" title="Copart Partner">
+              <img src="assets/images/Copart_logo.svg.png" alt="Copart" width="80" height="26" style="height:26px;width:auto;object-fit:contain;display:block" loading="lazy" decoding="async">
+            </a>
+            <a href="https://www.iaai.com" target="_blank" style="display:flex;align-items:center;background:#fff;border-radius:6px;padding:4px 10px;border:1px solid rgba(255,255,255,.1);transition:opacity .2s" title="IAAI Partner">
+              <img src="assets/images/iaa-insurance-auto-auctions-logo-png_seeklogo-368159.png" alt="IAA" width="80" height="26" style="height:26px;width:auto;object-fit:contain;display:block" loading="lazy" decoding="async">
+            </a>
           </div>
         </div>
         <div class="fc">
@@ -2637,9 +3564,14 @@ footer { background: #020d1c; color: #fff; }
   <div class="container">
     <div class="fb">
       <p>© <span id="fyr"></span> VicDavis Auto Link. All rights reserved. Accra, Ghana.</p>
-      <div class="fpbs">
-        <span class="fpb">COPART PARTNER</span>
-        <span class="fpb">IAAI PARTNER</span>
+      <div class="fpbs" style="display:flex;align-items:center;gap:14px">
+        <!-- FIX 5: Correct asset filenames with width/height to prevent layout shift -->
+        <a href="https://www.copart.com" target="_blank" title="Copart Partner" style="opacity:.6;transition:opacity .2s;display:block">
+          <img src="assets/images/Copart_logo.svg.png" alt="Copart" width="72" height="22" style="height:22px;width:auto;object-fit:contain;filter:invert(1) brightness(1);display:block" loading="lazy" decoding="async">
+        </a>
+        <a href="https://www.iaai.com" target="_blank" title="IAAI Partner" style="opacity:.6;transition:opacity .2s;display:block">
+          <img src="assets/images/iaa-insurance-auto-auctions-logo-png_seeklogo-368159.png" alt="IAA" width="72" height="22" style="height:22px;width:auto;object-fit:contain;filter:invert(1) brightness(1);display:block" loading="lazy" decoding="async">
+        </a>
       </div>
     </div>
   </div>
@@ -2666,7 +3598,7 @@ footer { background: #020d1c; color: #fff; }
       <svg viewBox="0 0 24 24" fill="none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
     <div class="rate-box-logo">
-      <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:50px;width:auto;object-fit:contain;" />
+      <img src="assets/images/IMG_20260513_010215_065-removebg-preview.png" alt="VicDavis Auto Link" style="height:50px;width:auto;object-fit:contain;" loading="lazy" decoding="async" />
     </div>
     <div id="rateContent">
       <h3>Get the Best Deal.<br>Leave a Quick Rating.</h3>
@@ -3242,9 +4174,9 @@ function submitRating() {
   document.getElementById('rateSuccess').style.display = 'block';
   try { localStorage.setItem('vd_rated', '1'); } catch(e) {}
 }
-// Auto-show rating popup after 45 seconds, only if not already rated
+// FIX 6: Show rating popup after 45 seconds on EVERY page load.
+// localStorage/sessionStorage checks removed — popup is no longer suppressed after first visit.
 setTimeout(() => {
-  try { if (localStorage.getItem('vd_rated')) return; } catch(e) {}
   openRating();
 }, 45000);
 
@@ -3255,7 +4187,9 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFAQs();
   calcR();
   checkOpen();
-  typeWriter();
+  /* typeWriter() intentionally NOT called here.
+     It is called by the preloader after fade-out completes (see preloader script).
+     This prevents the animation finishing before the user sees the hero. */
   initAnim();
   startCountdowns();
 });
